@@ -60,6 +60,10 @@ a,b = [x for x in alpha if x not in seen]
 rooms[a].addCon(b)
 rooms[b].addCon(a)
 
-for room in rooms.keys():
-    print(rooms[room].printKeys())
 
+agent = "A"
+rooms["A"].enter()
+
+agent = rooms[agent].move()
+
+print(agent)
