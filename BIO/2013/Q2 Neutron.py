@@ -1,5 +1,5 @@
 from collections import defaultdict
-
+from copy import deepcopy
 
 def dot():
     return "."
@@ -62,7 +62,7 @@ class grid:
 
     def fullMove(self,piece1,team):
         loseFace = None
-        bestFace = None
+        bestFace = []
         if team == 'F':
             lose = 4
             win = 0
@@ -70,25 +70,26 @@ class grid:
             lose = 0
             win = 4
         for face in directions:
-            oppositeFace = (face[0] * -1,face[1]*-1)
+            oppositeFace = [face[0] * -1,face[1]*-1]
+            nBoard = deepcopy(self)
             if self.checkMove(self.neut,face):
-                if win == self.move(self.neut,face):
+                if win == nBoard.move(nBoard.neut,face):
                     self.move(self.neut,face)
                     self.displayGrid()
                     print("Winning move")
                     exit()
-                elif lose == self.move(self.neut,face):
+                elif lose == nBoard.move(nBoard.neut,face):
                     loseFace = face
                 else:
-                    self.move(self.neut,face)
-                    if True not in [self.checkMove(piece1,face1) for face1 in directions]:
-                        self.move(self.neut,oppositeFace)
-                    else:
-                        self.move(self.neut,oppositeFace)
-                        if bestFace is None:
-                            bestFace = face
-        if bestFace is not None:
-            self.move(self.neut,bestFace)
+                    nBoard.move(nBoard.neut,face)
+                    if True not in [nBoard.checkMove(piece1,face1) for face1 in directions]:
+                        pass
+                    elif True in [nBoard.checkMove(piece1,face1) for face1 in directions]:
+                        bestFace.append(face)
+        if bestFace:
+            self.move(self.neut,bestFace[0])
+            self.displayGrid()
+            print("*"*30)
         else:
             if loseFace is not None:
                 print("Losing move")
@@ -98,6 +99,8 @@ class grid:
         for face in directions:
             if self.checkMove(piece1,face):
                 self.move(piece1,face)
+                self.displayGrid()
+                print("*"*30)
                 break
 
     def displayGrid(self):
@@ -127,7 +130,6 @@ for h in [F,S]:
 while True:
     for h in [F, S]:
         print("//{} next".format(h.colour))
-        theBoard.displayGrid()
         theBoard.fullMove(h.currentPiece, h.colour)
         h.count = (h.count + 1) % 5
 """
