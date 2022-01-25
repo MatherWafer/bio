@@ -64,11 +64,11 @@ class grid:
         loseFace = None
         bestFace = []
         if team == 'F':
-            lose = 4
-            win = 0
-        elif team == 'S':
             lose = 0
             win = 4
+        elif team == 'S':
+            lose = 4
+            win = 0
         for face in directions:
             oppositeFace = [face[0] * -1,face[1]*-1]
             nBoard = deepcopy(self)
@@ -76,7 +76,7 @@ class grid:
                 if win == nBoard.move(nBoard.neut,face):
                     self.move(self.neut,face)
                     self.displayGrid()
-                    print("Winning move")
+                    #print("Winning move")
                     exit()
                 elif lose == nBoard.move(nBoard.neut,face):
                     loseFace = face
@@ -88,19 +88,19 @@ class grid:
                         bestFace.append(face)
         if bestFace:
             self.move(self.neut,bestFace[0])
-            self.displayGrid()
-            print("*"*30)
+            #self.displayGrid()
+            #print("*"*30)
         else:
             if loseFace is not None:
-                print("Losing move")
-                self.move(self.neut,loseFace)
+                #print("Losing move")
+                #self.move(self.neut,loseFace)
                 self.displayGrid()
                 exit()
         for face in directions:
             if self.checkMove(piece1,face):
                 self.move(piece1,face)
-                self.displayGrid()
-                print("*"*30)
+                #self.displayGrid()
+                #print("*"*30)
                 break
 
     def displayGrid(self):
@@ -122,14 +122,14 @@ f = theBoard.getGrid()
 print(F.currentPiece.coords)
 
 for h in [F,S]:
-    print(h.colour)
+    #print(h.colour)
     theBoard.fullMove(h.currentPiece,h.colour)
     h.count = (h.count + 1) % 5
     theBoard.displayGrid()
 
 while True:
     for h in [F, S]:
-        print("//{} next".format(h.colour))
+        #print("//{} next".format(h.colour))
         theBoard.fullMove(h.currentPiece, h.colour)
         h.count = (h.count + 1) % 5
 """
